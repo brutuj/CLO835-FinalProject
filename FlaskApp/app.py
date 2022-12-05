@@ -87,11 +87,11 @@ BACKGROUND = "/media/bg.jpg"
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', background=background_url)
+    return render_template('addemp.html', background=background_url["bg"])
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', background=background_url)
+    return render_template('about.html', background=background_url["bg"])
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -115,11 +115,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=background_url)
+    return render_template('addempoutput.html', name=emp_name, background=background_url["bg"])
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=background_url)
+    return render_template("getemp.html", background=background_url["bg"])
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
