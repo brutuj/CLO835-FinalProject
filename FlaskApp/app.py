@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from pymysql import connections
 import os
+import boto3
+import botocore
 import random
 import argparse
 
@@ -13,6 +15,27 @@ DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
+S3_BUCKET = os.environ.get("S3_BUCKET")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN")
+AWS_REGION = os.environ.get("AWS_REGION")
+
+
+
+# Permission to S3 Bucket
+app.config['S3_BUCKET'] = S3_BUCKET
+app.config['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
+app.config['AWS_SECRET_ACCESS_KEY'] = AWS_SECRET_ACCESS_KEY
+app.config['AWS_SESSION_TOKEN'] = AWS_SESSION_TOKEN
+
+
+s3 = boto3.resource("s3",
+            aws_access_key_id=app.config['AWS_ACCESS_KEY_ID'],
+            aws_secret_access_key=app.config['AWS_SECRET_ACCESS_KEY'],
+            aws_session_token=app.config['AWS_SESSION_TOKEN'],
+            region_name=AWS_REGION
+            )
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
@@ -44,6 +67,23 @@ SUPPORTED_COLORS = ",".join(color_codes.keys())
 # Generate a random color
 COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lime"])
 
+
+#Backgrounds
+background_url = {
+    "bg": "https://clofinal.s3.amazonaws.com/bg.jpg"
+    }
+
+
+#Code to download file
+def download_file(bg, bucket):
+    s3 = boto3.resource('s3')
+    output = f"/media/bg.jpg"
+    s3.Bucket(bucket).download_file(bg, output)
+
+    return output
+
+
+BACKGROUND = "/media/bg.jpg"
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
@@ -133,4 +173,4 @@ if __name__ == '__main__':
         print("Color not supported. Received '" + COLOR + "' expected one of " + SUPPORTED_COLORS)
         exit(1)
 
-    app.run(host='0.0.0.0',port=8080,debug=True)
+    app.run(host='0.0.0.0',port=81,debug=True)
