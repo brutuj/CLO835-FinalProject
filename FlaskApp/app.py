@@ -22,7 +22,6 @@ AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN")
 AWS_REGION = os.environ.get("AWS_REGION")
 
 
-
 # Permission to S3 Bucket
 app.config['S3_BUCKET'] = S3_BUCKET
 app.config['AWS_ACCESS_KEY_ID'] = AWS_ACCESS_KEY_ID
@@ -117,11 +116,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=bg_url["BG"])
+    return render_template('addempoutput.html', name=emp_name, background=bg_url[BG])
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=bg_url["BG"])
+    return render_template("getemp.html", background=bg_url[BG])
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -150,7 +149,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=bg_url["BG"])
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=bg_url[BG])
 
 if __name__ == '__main__':
     
