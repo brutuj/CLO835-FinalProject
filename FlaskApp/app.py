@@ -13,7 +13,7 @@ DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
-COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
+BG_FROM_ENV = os.environ.get('BACKGROUND') or "bg1"
 DBPORT = int(os.environ.get("DBPORT"))
 S3_BUCKET = os.environ.get("S3_BUCKET")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
@@ -69,8 +69,9 @@ COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lim
 
 
 #Backgrounds
-background_url = {
-    "bg": "https://clofinal.s3.amazonaws.com/bg.jpg"
+bg_url = {
+    "bg1": "https://clofinal.s3.amazonaws.com/bg1.jpg",
+    "bg2": "https://clofinal.s3.amazonaws.com/bg2.jpg"
     }
 
 
@@ -82,16 +83,17 @@ def download_file(bg, bucket):
 
     return output
 
+SUPPORTED_BG = ",".join(bg_url.keys())
 
-BACKGROUND = "/media/bg.jpg"
+BG = random.choice(["bg1", "bg2"])
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', background=background_url["bg"])
+    return render_template('addemp.html', background=bg_url[BG])
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', background=background_url["bg"])
+    return render_template('about.html', background=bg_url[BG])
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -115,11 +117,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=background_url["bg"])
+    return render_template('addempoutput.html', name=emp_name, background=bg_url["BG"])
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=background_url["bg"])
+    return render_template("getemp.html", background=bg_url["BG"])
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -148,29 +150,29 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], color=color_codes[COLOR])
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=bg_url["BG"])
 
 if __name__ == '__main__':
     
     # Check for Command Line Parameters for color
     parser = argparse.ArgumentParser()
-    parser.add_argument('--color', required=False)
+    parser.add_argument('--background', required=False)
     args = parser.parse_args()
 
-    if args.color:
-        print("Color from command line argument =" + args.color)
-        COLOR = args.color
-        if COLOR_FROM_ENV:
-            print("A color was set through environment variable -" + COLOR_FROM_ENV + ". However, color from command line argument takes precendence.")
-    elif COLOR_FROM_ENV:
-        print("No Command line argument. Color from environment variable =" + COLOR_FROM_ENV)
-        COLOR = COLOR_FROM_ENV
+    if args.background:
+        print("Color from command line argument =" + args.background)
+        BG = args.background
+        if BG_FROM_ENV:
+            print("A color was set through environment variable -" + BG_FROM_ENV + ". However, color from command line argument takes precendence.")
+    elif BG_FROM_ENV:
+        print("No Command line argument. Color from environment variable =" + BG_FROM_ENV)
+        BG = BG_FROM_ENV
     else:
-        print("No command line argument or environment variable. Picking a Random Color =" + COLOR)
+        print("No command line argument or environment variable. Picking a Random Color =" + BG)
 
     # Check if input color is a supported one
-    if COLOR not in color_codes:
-        print("Color not supported. Received '" + COLOR + "' expected one of " + SUPPORTED_COLORS)
+    if BG not in bg_url:
+        print("Color not supported. Received '" + BG + "' expected one of " + SUPPORTED_BG)
         exit(1)
 
     app.run(host='0.0.0.0',port=81,debug=True)
