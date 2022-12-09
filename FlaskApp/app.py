@@ -87,15 +87,15 @@ def download_file(bg, bucket):
 
 SUPPORTED_BG = ",".join(bg_url.keys())
 
-BG = random.choice(["https://clofinal.s3.amazonaws.com/bg1.jpg", "https://clofinal.s3.amazonaws.com/bg2.jpg"])
+BG = random.choice(["bg1", "bg2"])
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', background=BG)
+    return render_template('addemp.html', background=bg_url[BG])
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', background=BG)
+    return render_template('about.html', background=bg_url[BG])
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -119,11 +119,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=BG)
+    return render_template('addempoutput.html', name=emp_name, background=bg_url[BG])
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=BG)
+    return render_template("getemp.html", background=bg_url[BG])
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -152,7 +152,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=BG)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=bg_url[BG])
 
 if __name__ == '__main__':
     
