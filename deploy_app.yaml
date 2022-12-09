@@ -35,6 +35,16 @@ spec:
             secretKeyRef:
               name: cred-secret
               key: DBPWD
+        - name: BACKGROUND
+          valueFrom:
+            configMapKeyRef:
+              name: bg-configmap
+              key: BACKGROUND
+        - name: GROUP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: bg-configmap
+              key: GROUP_NAME
         ports:
         - name: http
           containerPort: 81
