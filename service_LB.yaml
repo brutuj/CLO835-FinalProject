@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata: 
+  name: lbservice-app
+  namespace: final
+  labels:
+    name: loadbalancer-app
+    app: employees
+spec:
+  ports:
+  - port: 81
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: employees
+  type: LoadBalancer
