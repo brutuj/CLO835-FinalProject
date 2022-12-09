@@ -23,6 +23,7 @@ AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN")
 AWS_REGION = os.environ.get("AWS_REGION")
+GROUP_NAME = os.environ.get("GROUP_NAME")
 
 
 # Permission to S3 Bucket
@@ -91,11 +92,11 @@ BG = random.choice(["bg1", "bg2"])
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', background=bg_url[BG])
+    return render_template('addemp.html', group=GROUP_NAME,background=bg_url[BG])
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', background=bg_url[BG])
+    return render_template('about.html', group=GROUP_NAME,background=bg_url[BG])
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -119,11 +120,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=bg_url[BG])
+    return render_template('addempoutput.html', name=emp_name, group=GROUP_NAME,background=bg_url[BG])
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=bg_url[BG])
+    return render_template("getemp.html", group=GROUP_NAME,background=bg_url[BG])
 
 
 @app.route("/fetchdata", methods=['GET','POST'])
