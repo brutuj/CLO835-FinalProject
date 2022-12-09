@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+    owner: rutuj
+  name: deploymysql
+  namespace: final
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      volumes:
+      - name: default-pvc
+        persistentVolumeClaim:
+          claimName: default-pvc
+      containers:
+      - name: mysql
+        image: 899518646067.dkr.ecr.us-east-1.amazonaws.com/webapp-dev-mysql:v1.0
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mysql-pvc
+        imagePullPolicy: "Always"
+        ports:
+        - name: mysql
+          containerPort: 3306
+          protocol: TCP
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cred-secret
+              key: DBPWD
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
