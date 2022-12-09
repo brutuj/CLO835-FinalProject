@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
     name: bg-configmap
 data:
-    BACKGROUND: "bg2"
+    BACKGROUND: "bg1"
