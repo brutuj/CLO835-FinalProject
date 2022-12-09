@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployapp
+  namespace: final
+  labels:
+    app: employees
+    owner: rutuj
+spec:
+  selector:
+    matchLabels:
+      app: employees
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: employees
+    spec:
+      containers:
+      - name: employees
+        image: 899518646067.dkr.ecr.us-east-1.amazonaws.com/webapp-dev-app:v1.0
+        imagePullPolicy: "Always"
+        env:
+        - name: DBHOST
+          value: "clusterip.final"
+        - name: DBPORT
+          value: "3306"
+        - name: DBUSER
+          valueFrom:
+            secretKeyRef:
+              name: cred-secret
+              key: DBUSER
+        - name: DBPWD
+          valueFrom:
+            secretKeyRef:
+              name: cred-secret
+              key: DBPWD
+        ports:
+        - name: http
+          containerPort: 81
+          protocol: TCP
+      dnsPolicy: ClusterFirst
