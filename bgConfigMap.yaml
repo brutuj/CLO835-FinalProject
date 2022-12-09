@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
     name: bg-configmap
 data:
-    BACKGROUND: "bg1"
+    BACKGROUND: "bg3"
+    GROUP_NAME: "GROUP14"
+    
