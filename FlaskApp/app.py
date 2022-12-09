@@ -74,7 +74,8 @@ COLOR = random.choice(["red", "green", "blue", "blue2", "darkblue", "pink", "lim
 #Backgrounds list not implementing
 bg_url = {
     "bg1": "https://clofinal.s3.amazonaws.com/bg1.jpg",
-    "bg2": "https://clofinal.s3.amazonaws.com/bg2.jpg"
+    "bg2": "https://clofinal.s3.amazonaws.com/bg2.jpg",
+    "bg3": "https://clofinal.s3.amazonaws.com/bg3.JPG"
     }
 
 
