@@ -1,3 +1,3 @@
-# CLO835-FinalProject
+# Create 2 Tier Web-App to Manage K8s cluster on Amazon EKS with Pod auto-scaling and deployment automation
 
-This file will be updated later
+# Step 1: 
