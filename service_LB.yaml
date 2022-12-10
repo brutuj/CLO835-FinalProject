@@ -9,7 +9,7 @@ metadata:
 spec:
   ports:
   - port: 81
-    targetPort: 8080
+    targetPort: 81
     protocol: TCP
   selector:
     app: employees
