@@ -2,7 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: bg-configmap
+    namespace: final
 data:
     BACKGROUND: "bg3"
     GROUP_NAME: "GROUP14"
+    
     
