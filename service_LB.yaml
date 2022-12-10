@@ -10,7 +10,7 @@ spec:
   ports:
   - port: 81
     targetPort: 81
-    protocol: http
+    protocol: TCP
   selector:
     app: employees
   type: LoadBalancer
